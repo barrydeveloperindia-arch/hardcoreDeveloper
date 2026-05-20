@@ -23,8 +23,12 @@ To guarantee processing speed and network security, the system runs on the follo
 *   **Invoicing:** Autonomously generated offline via `FPDF` in Python, removing SaaS branding.
 
 ### Phase 3: LangGraph Orchestration (GOKU)
-*   **Outlook Daemon:** Ingests emails via MSAL, strips signatures, extracts `.step` and `.stl` files.
-*   **GOKU Router:** Classifies intent (e.g., RFQ vs. Status Check) and delegates tasks to specialized background workers via Redis.
+*   **Outlook Daemon (Email Topologies):** Autonomously polls via MSAL based on strict mailbox heuristics:
+    *   `enquiries@englabs.co.uk`: Routes to GOKU for RFQ extraction (strips signatures, extracts `.step` / `.stl`).
+    *   `admin1@englabs.co.uk`: Routes to the Financial Agent for invoice, BharatNXT, and bank reconciliation.
+    *   `marketing1@englabs.co.uk`: Routes to GOKU for outbound campaign management.
+    *   `bharata@englabs.co.uk` & `salila@englabs.co.uk`: Executive bypass. The AI will strictly *ignore* these mailboxes unless explicitly @mentioned to preserve privacy and prevent hallucinated replies to stakeholders.
+*   **GOKU Router:** Classifies intent from the `enquiries` funnel and delegates CAD parsing to specialized background workers via Redis.
 
 ### Phase 4: Manufacturability & Quotation Engine
 *   **Constraint 1 (Bounding Box):** Checks if X, Y, or Z exceeds 375mm. If true -> `REJECT_OVERSIZE`.
