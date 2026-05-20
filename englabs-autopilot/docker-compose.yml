@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - englabs_net
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - englabs_net
+
+  postgres:
+    # We use the pgvector image natively for GenAI embeddings
+    image: ankane/pgvector:v0.5.1
+    environment:
+      POSTGRES_USER: englabs
+      POSTGRES_PASSWORD: hardcorepassword
+      POSTGRES_DB: englabs_autopilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - englabs_net
+
+volumes:
+  pg_data:
+
+networks:
+  englabs_net:
+    driver: bridge
