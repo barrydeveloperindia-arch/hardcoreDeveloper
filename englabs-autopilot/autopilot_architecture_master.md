@@ -44,3 +44,6 @@ No business logic may be written without a failing `pytest` assertion.
 *   **CAD Mocking:** Feasibility logic is tested against standard geometrical stubs (e.g., 10x10x10 cube) to guarantee mathematical perfection.
 *   **Hardware Mocking:** The HP API is simulated with JSON payloads to test error-catching (e.g., Mixer Overfill) without physical hardware risks.
 *   **CI/CD:** 100% line coverage is strictly required for the financial transaction (`journal_entries`) modules.
+
+## 5. Operations & Handoff
+For deployment procedures, edge hardware specifications, and system integration details, please refer to the [Architecture Handover Document](docs/architecture/ARCHITECTURE_HANDOVER.md).
